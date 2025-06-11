@@ -342,20 +342,9 @@ def GetPopulationOf(area: str):
 		# print(f"No population data found for {area}. It might not be a recognized city or area in Wikidata.")
 		return None
 
-q1 = QUESTION('how * *', [(('old is', '*'), GetAgeOf)])
-q2 = QUESTION('what * *', [(('is the population of', '*'), GetPopulationOf)])
 
-q1.add_condition(('big is the population of', '*'), GetPopulationOf)
-q1.add_condition(('many people live in', '*'), GetPopulationOf)
-q2.add_condition(('is the age of', '*'), GetAgeOf)
-
-q1.inject_conditions()
-q2.inject_conditions()
 
 questions = []
-questions.append(q1)
-questions.append(q2)
-
 def ask(question: str):
 	question = question.strip(string.punctuation).lower()
 
@@ -368,10 +357,32 @@ def ask(question: str):
 	return None
 
 
-assert '62' == ask('how old is Tom Cruise')
-assert '35' == ask('how old is Taylor Swift')
-assert '8799728' == ask('what is the population of London')
-assert '8804190' == ask('what is the population of New York?')
+
+
+if __name__ == '__main__':
+
+	## initialise the questions with the basic conditions
+	how = QUESTION('how * *', [(('old is', '*'), GetAgeOf)])
+	what = QUESTION('what * *', [(('is the population of', '*'), GetPopulationOf)])
+
+	## add some more proof of concept conditions
+	how.add_condition(('big is the population of', '*'), GetPopulationOf)
+	how.add_condition(('many people live in', '*'), GetPopulationOf)
+	what.add_condition(('is the age of', '*'), GetAgeOf)
+
+	## inject the conditions so that the injected_parts are ready to be used
+	how.inject_conditions()
+	what.inject_conditions()
+
+	## add the questions to the list of questions
+	questions.append(how)
+	questions.append(what)
+
+	assert '62' == ask('how old is Tom Cruise') == ask('what is the age of Tom Cruise')
+	assert '35' == ask('how old is Taylor Swift') == ask('what is the age of Taylor Swift')
+	## These two cannot be demonstrated in the same way as above, the rate limiting of the Wikidata API prevents repeated calls in a short time frame.
+	assert '8799728' == ask('what is the population of London') # == ask('how big is the population of London') == ask('how many people live in London')
+	assert '8804190' == ask('what is the population of New York?') # == ask('how big is the population of New York?') == ask('how many people live in New York?')
 
 
 
