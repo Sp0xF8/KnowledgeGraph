@@ -26,7 +26,17 @@ Whilst both of these solutions make use of the same `GetPopulationOf(area:str)` 
 
 
 # Documentation (ordered by what is most worth reading)
-
+- [Forward Facing Code](#forward-facing-code)
+    - [Creating a Question](#creating-a-question)
+    - [Adding a condition](#adding-a-condition)
+    - [Injecting condition parts](#injecting-condition-parts)
+    - [Asking a question](#asking-a-question)
+- [WikiData Functions](#wikidata-functions)
+    - [GetPopulationOf](#getpopulationof)
+    - [GetAgeOf](#getageof)
+    - [GetFromWIKIDATA](#getfromwikidata)
+- [Ask Function](#ask-function)
+- [Main Function](#main-function)
 
 ## Forward Facing Code
 
