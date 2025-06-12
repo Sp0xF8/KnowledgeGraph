@@ -30,7 +30,7 @@ class QUESTION:
 				raise ValueError(f'Number of conditions in {condition_answer[0]} does not match the number of * in the question. Expected {self.number_of_conditions}, got {len(condition_answer[0])}')
 		
 
-	def __init__(self, question_with_mask: str, condition_answers: list):
+	def __init__(self, question_with_mask: str, condition_answers: list[tuple[tuple, callable]]):
 		"""
 		Initializes an instance with a masked question and corresponding condition answers.
 		Args:
