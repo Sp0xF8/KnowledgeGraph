@@ -1,6 +1,6 @@
 # Knowledge Grpah Guys
 
-> **Note:** To those in charge of hiring. Thank you for giving me this oppertunity. Regardless of progression into the next stage, I had fun designing my solution. I look forward to the potential of hearing back, and being given more fun tasks!
+> **Note:** To those in charge of hiring. Thank you for giving me this opportunity. Regardless of the progression into the next stage, I had fun designing my solution. I look forward to the potential of hearing back, and being given more fun tasks!
 
 ## Task
 ```python
@@ -16,13 +16,13 @@ if _name_ == '_main_':
 ```
 ## Approach
 
-There are many ways to solve the problem above, but two solutions truly stuck out. First impressions of this task is that a function needs to be developed which answers two questions: "How old is a celebrity" and "what is the population of a city"? Whilst on the right track, what this task is really defining is the basic functionality of a chatbot. With this, a simple string equlivancy is possible, given the limited test case, but not optimal. These two possible solutions are discussed at greater detail below. 
+There are many ways to solve the problem above, but two solutions truly stuck out. My first impression of this task is that a function needs to be developed that answers two questions: "how old is a celebrity" and "what is the population of a city". Whilst on the right track, what this task is defining is the basic functionality of a chatbot. With this, a simple string equivalency is possible, given the limited test case, but not optimal. These two possible solutions are discussed in greater detail below. 
 
-The first is simply about finishing the task in as few lines of code as possible: creating a function which handles each query to WikiData, then just call the correct one depending on the question asked. This would work, and there is theoretically nothing stopping this from being made. However, this is the less ideal solution for numerous reasons. The largest being maintainability, and possibility of expansion. Adding new questions which can be answered in this manor would be time consuming and could quickly become complicated to manage. 
+The first is simply about finishing the task in as few lines of code as possible: creating a function that handles each query to WikiData, then simply calling the correct one depending on the question asked. This would work, and there is theoretically nothing stopping this from being made. However, this is the least ideal solution for numerous reasons. The largest being maintainability, and possibility of expansion. Adding new questions that can be answered in this manner would be time-consuming and could quickly become complicated to manage. 
 
-A better solution is designing a simple Question nodelling framework. Inspired by AIML, the creaiton of this basic framework allows for base questions to be defined with wildcards. These wildcards are then either replaced by matching "conditional" words, or are kept as wildcards and treated as "variables". For example, the question "how old is tom cruise" could be interperated as "how * *". Here, the first wildcard is matched with the condition "old is", leaving the final wildcard as a variable passed to the "on-true" function. In the case of this specific quesiton, the variable "Tom Cruise" is passed to a function which then gets his age via WikiData. 
+A better solution is designing a simple Question modeling framework. Inspired by AIML, the creation of this basic framework allows for base questions to be defined with wildcards. These wildcards are then either replaced by matching "conditional" words or are kept as wildcards and treated as "variables". For example, the question "how old is tom cruise" could be interpreted as "how * *". Here, the first wildcard is matched with the condition "old is", leaving the final wildcard as a variable passed to the "on-true" function. In the case of this specific question, the variable "Tom Cruise" is passed to a function which then gets his age via WikiData. 
 
-Whilst both of these solutions make use of the same `GetPopulationOf(area:str)` and `GetAgeOf(name:str)` functions, thier implimentations are vastly different. I stand behind my decision to exercise creativity in this coding challange, as the given solution is one which is highly adaptable and could lead to the development of a basic chatbot that would facilitate more nuanced discussions than simply using a comparative if statement. 
+Whilst both of these solutions make use of the same `GetPopulationOf(area: str)` and `GetAgeOf(name: str)` functions, their implementations are vastly different. I stand behind my decision to exercise creativity in this coding challenge, as the given solution is one which is highly adaptable and could lead to the development of a basic chatbot that would facilitate more nuanced discussions than simply using a comparative if statement. 
 
 
 # Documentation (ordered by what is most worth reading)
@@ -41,7 +41,7 @@ Whilst both of these solutions make use of the same `GetPopulationOf(area:str)` 
 ## Forward Facing Code
 
 ### Creating a Question
-***Paramaters***: 
+***Parameters***: 
 | Parameter   | Type     | Description                |
 |-------------|----------|----------------------------|
 | question_with_mask | string | Used to map an input to conditional outputs |
@@ -69,9 +69,9 @@ def __init__(self, question_with_mask: str, condition_answers: list[tuple[tuple,
 
 
 ***Example Useage***:
-When handling questions like "how old is X", this is broken down into different stages: the base question, matching paramaters, and potential variables. 
+When handling questions like "how old is X", this is broken down into different stages: the base question, matching parameters, and potential variables. 
 
-Here, "how " becomes the base of the question: followed by "old is", replacing the first wildcard. The second wildcard is identified as a variable by its '*' (astrics) in the conditions section. After the variable text (e.g. "Tom Cruise") has been identified, it is added to a list FIFO list representing the variables in question. These variables are then unpacked and passed to the "on-true" function once a condition has been met. 
+Here, "how " becomes the base of the question: followed by "old is", replacing the first wildcard. The second wildcard is identified as a variable by its '*' (asterisk) in the conditions section. After the variable text (e.g. "Tom Cruise") has been identified, it is added to a list FIFO list representing the variables in question. These variables are then unpacked and passed to the "on-true" function once a condition has been met. 
 
 
 ```py
@@ -88,14 +88,14 @@ how = QUESTION(
 
 
 ### Adding a condition
-Occasionally, it might be useful to be able to add a condition after an objects creation. With this, the conditions are checked in the same way as the constructor. There is a key difference here though. After adding a new condition, the parts are not re-injected. This is built off the assumption that more conditions may be added. To avoid wasted builds of conditions, responsibility to inject parts after defining additional conditions is handed to the developer. 
+Occasionally, it might be useful to be able to add a condition after an object creation. With this, the conditions are checked in the same way as the constructor. There is a key difference here though. After adding a new condition, the parts are not re-injected. This is built on the assumption that more conditions may be added. To avoid wasted builds of conditions, the responsibility to inject parts after defining additional conditions is handed to the developer. 
 
 
-***Args:***
+***Parameters:***
 | Parameter   | Type     | Description                |
 |-------------|----------|----------------------------|
 | condition   | tuple    | A tuple containing the condition and a wildcard, e.g. ('old is', '*') |
-| function_on_true | callable | A function which will be called when the condition is met, e.g. GetAgeOf |
+| function_on_true | callable | A function that will be called when the condition is met, e.g. GetAgeOf |
 
 ```py
 def add_condition(self, condition: tuple, function_on_true):
@@ -110,7 +110,7 @@ def add_condition(self, condition: tuple, function_on_true):
     self.injected_parts = None  # Reset injected parts
 ```
 
-***Example Useage***:
+***Example Usage***:
 ```py
 how.add_condition(('big is the population of', '*'), GetPopulationOf)
 how.add_condition(('many people live in', '*'), GetPopulationOf)
@@ -125,7 +125,7 @@ def inject_conditions(self):
         self.injected_parts = self.__inject_condition_parts()
 ```
 
-***Example Useage***:
+***Example Usage***:
 ```py
 how.add_condition(('big is the population of', '*'), GetPopulationOf)
 how.add_condition(('many people live in', '*'), GetPopulationOf)
@@ -138,7 +138,7 @@ how.inject_conditions()
 This is the main function which is called to ask a question. It first checks if the conditions have been injected, and if not, it calls `inject_conditions()`. Then, it finds the matching condition for the question and calls the corresponding function with any variables extracted from the question. If no matching condition is found, it returns `None`.
 
 
-***Args:***
+***Parameters:***
 | Parameter   | Type     | Description                |
 |-------------|----------|----------------------------|
 | question    | str      | The question to be asked, e.g. "how old is Tom Cruise" |
@@ -163,7 +163,7 @@ def ask_question(self, question: str):
 ## WikiData Functions
 
 ### GetPopulationOf
-This function was easy enough to get working for "What is the population of London". However, handling the ambiguity of "What is the population of New York?" was a bit more complex. Origonally, the function would simply search for the population of the given area. However, this would return the population of New York (state) rather than New York City. To handle this, the function first checks if the area is ambiguous by looking for the type of the area in question. If it is not a city, town, or village, it appends "City" to the area name before searching for the population. This aims to remove ambiguity and ensure the correct population is returned.
+This function was easy enough to get working for "What is the population of London". However, handling the ambiguity of "What is the population of New York?" was a bit more complex. Originally, the function would simply search for the population of the given area. However, this would return the population of New York (state) rather than New York City. To handle this, the function first checks if the area is ambiguous by looking for the type of the area in question. If it is not a city, town, or village, it appends "City" to the area name before searching for the population. This aims to remove ambiguity and ensure the correct population is returned.
 
 ***Args:***
 | Parameter   | Type     | Description                |
@@ -174,7 +174,7 @@ This function was easy enough to get working for "What is the population of Lond
 def GetPopulationOf(area: str):
 	area = area.strip().title()
 
-	## check for ambiguity. If searching for an area that is both a state/county and a city, it it should be made clear we are looking from the city.
+	## check for ambiguity. If searching for an area that is both a state/county and a city, it should be made clear we are looking from the city.
 	check_query = f"""
 	SELECT ?typeLabel WHERE {{
 		?area rdfs:label "{area}"@en.
@@ -215,7 +215,7 @@ def GetPopulationOf(area: str):
 ### GetAgeOf
 This function retrieves the age of a person by their name. It queries Wikidata for the person's birth date and calculates the age based on the current date.
 
-***Args:***
+***Parameters:***
 | Parameter   | Type     | Description                |
 |-------------|----------|----------------------------|
 | name        | str      | The name of the person to get the age of, e.g. "Tom Cruise" |
@@ -244,7 +244,7 @@ def GetAgeOf(name: str):
 ### GetFromWIKIDATA
 This function is a utility to query Wikidata using SPARQL. It sends a request to the Wikidata SPARQL endpoint and returns the results in JSON format.
 
-***Args:***
+***Parameters:***
 | Parameter   | Type     | Description                |
 |-------------|----------|----------------------------|
 | query       | str      | The SPARQL query to execute |
@@ -271,7 +271,7 @@ def GetFromWIKIDATA(query: str):
 ## Ask Function
 After populating the questions list, the ask function can be called with a question string. It will iterate through the questions and return the answer from the first matching question. This means that quests are checked in the order they were added, and the first match will be returned. If no match is found, it will return `None`.
 
-***Args:***
+***Parameters:***
 | Parameter   | Type     | Description                |
 |-------------|----------|----------------------------|
 | question    | str      | The question to ask, e.g. "how old is Tom Cruise" |
